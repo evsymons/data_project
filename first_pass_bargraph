@@ -1,0 +1,84 @@
+#Melvin, Everett, and Josh
+
+import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
+DATABASE_URL = ("file:/data/CS403F26/databases/yelp.db?mode=ro")
+def query(sql, parameters=None):
+    with sqlite3.connect(DATABASE_URL, uri=True) as connection:
+        return pd.read_sql_query(
+            sql,
+            connection,
+            params=parameters,
+        )
+
+#How well did businesses perform from before and after 2008 (given 4 years)?
+
+#looked up how to do a cutoff date using sqlitetutorial.net, highly recomend checking it out for SQL
+
+dataset = query("""
+    SELECT
+        business_id,
+        before_2008_average,
+        after_2008_average,
+        after_2008_average - before_2008_average AS difference
+        FROM (
+            SELECT
+                b.business_id,
+                AVG(CASE
+                    WHEN r.date >= '2004-01-01'
+                        AND r.date < '2008-01-01' 
+                    THEN r.stars
+                END) AS before_2008_average,
+                AVG(CASE
+                    WHEN r.date >= '2008-01-01'
+                        AND r.date < '2012-01-01' 
+                    THEN r.stars
+                END) AS after_2008_average
+            FROM business AS b
+            JOIN review AS r
+                ON b.business_id = r.business_id
+            WHERE r.stars IS NOT NULL
+                AND r.date < '2012-01-01'
+                AND b.business_id IN (
+                    SELECT business_id
+                    FROM review
+                    WHERE stars IS NOT NULL
+                        AND date < '2012-01-01'
+                    GROUP BY business_id
+                    HAVING COUNT(DISTINCT CASE
+                        WHEN date >= '2004-01-01'
+                            AND date < '2008-01-01' THEN '2004-2007'
+                        WHEN date >= '2008-01-01'
+                            AND date < '2012-01-01' THEN '2008-2011'
+                    END) = 2
+                )
+            GROUP BY
+                b.business_id
+        )
+    ORDER BY
+        business_id
+    LIMIT 3000
+""")
+
+print(dataset.head())
+
+dataset.to_csv("data_yay.csv", index=False)
+#before_business.to_csv("data_before2008.csv", index = True)
+
+#positive data indicates that the star average has gone up over time
+#negative indicates that the star average has gone down over time
+
+# make the bar graph
+
+data = pd.read_csv("data_yay.csv") # load in data
+
+ax = data.plot.bar(x="business_id", y="difference")
+
+plt.title("Difference in stars before and after 2008")
+plt.xlabel("Business")
+plt.ylabel("Difference in stars")
+plt.tight_layout()
+ax.xaxis.set_major_formatter(plt.NullFormatter())
+
+plt.show()
