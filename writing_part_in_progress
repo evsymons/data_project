@@ -2,8 +2,9 @@
 
 3. Our dataset has 3000 rows and 4 columns.
 
-4. ***Josh do this part
+4a. The dataset overall covers more data on the newer side than older. It starts from 2004 giving 4 years for reviews on that end, it ends at 2017 giving 9 years for reviews on the other hand. Our review of the data will use a limited amount of rows (3000) in order to not unfairly skew data one way or another.
+4b. The data trends toward older reviews being more positive. The average pre-2008 stars for a review is 3.8 whereas post-2008 it lands at 3.7. The overall data average can be seen to trend slightly toward being more negative post 2008
 
-6. ***Josh do this part
+6. Data Quality Limitation: The business stars variable at first seems like an ideal way to track how the business is doing on a broad scale. Rather than just accounting for one experience, it encompasses all experiences into one review that better exemplifies the quality over the course of multiple periods of time. The issue when looking into this variable further is that it does not encapsulate the time period the review does. What this means is the number is only taking into account the most recent state and does not provide useful insight into the potential change in quality a restauraunt could have experienced between our desired time frame.
 
 7. Our findings indicate that businesses performed better before 2008 compared to after 2008. We found the average stars for each business from 2004-2007 and 2008-2011. Then, we subtracted the earlier average from the more recent one, resulting in a difference that would be positive if the stars were higher after 2008, and negative if the stars were higher before 2008. We sorted our graph to better visualize the data.
