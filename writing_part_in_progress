@@ -1,0 +1,9 @@
+1. Main question: How well did businesses perform before and after 2008, given a time frame of four years?
+
+3. Our dataset has 3000 rows and 4 columns.
+
+4. ***Josh do this part
+
+6. ***Josh do this part
+
+7. Our findings indicate that businesses performed better before 2008 compared to after 2008. We found the average stars for each business from 2004-2007 and 2008-2011. Then, we subtracted the earlier average from the more recent one, resulting in a difference that would be positive if the stars were higher after 2008, and negative if the stars were higher before 2008. We sorted our graph to better visualize the data.
